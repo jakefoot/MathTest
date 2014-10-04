@@ -80,7 +80,8 @@ public class DivTest extends JPanel
 		num1field = new JTextField();
 		num1field.setFont(MainGui.radiofont);
 		num1field.setColumns(2);
-		num1field.setEditable(false);
+		num1field.setEnabled(false);
+		num1field.setDisabledTextColor(Color.BLACK);
 		num1field.setHorizontalAlignment(JLabel.CENTER);
 		num1field.setBackground(Color.WHITE);
 		num1field.setBorder(null);
@@ -94,7 +95,8 @@ public class DivTest extends JPanel
 		num2field = new JTextField();
 		num2field.setFont(MainGui.radiofont);
 		num2field.setColumns(2);
-		num2field.setEditable(false);
+		num2field.setEnabled(false);
+		num2field.setDisabledTextColor(Color.BLACK);
 		num2field.setHorizontalAlignment(JLabel.CENTER);
 		num2field.setBackground(Color.WHITE);
 		num2field.setBorder(null);
@@ -127,6 +129,7 @@ public class DivTest extends JPanel
 		//define buttons
 		resetbutton = new JButton("Try again");
 		resetbutton.setFont(MainGui.radiofont);
+		resetbutton.setFocusable(false);
 		resetbutton.setEnabled(false);
 		buttonpane.add(resetbutton);
 		resetbutton.addActionListener(new ButtonHandlerClass());
@@ -142,7 +145,8 @@ public class DivTest extends JPanel
 		randhigh = max - min + 1;	
 		quant = qty;		
 		setProblem();
-		++counter;		
+		++counter;
+		ansfield.requestFocus();
 	}
 
 	private int getFactor ()

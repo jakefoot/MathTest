@@ -168,7 +168,6 @@ public class MainGui extends JFrame
 		startbutton.setFont(radiofont);
 		startbutton.addActionListener(new ButtonHandlerClass());
 		GBCsb.anchor = GridBagConstraints.PAGE_END;
-		//GBCsb.gridwidth = 2;
 		GBCsb.gridx = 3;
 		GBCsb.gridy = 4;
 		optionspanel.add(startbutton, GBCsb);
@@ -280,8 +279,8 @@ public class MainGui extends JFrame
 				{
 					test = new AddTest(qty, min, max);
 					test.setVisible(true);
-					optionspanel.setVisible(false);
-					add(test);					
+					add(test);
+					optionspanel.setVisible(false);					
 					pack();
 					MathTest.setHeader("Addition Practice");
 				}
@@ -289,8 +288,8 @@ public class MainGui extends JFrame
 				{
 					test = new SubTest(qty, min, max);				
 					test.setVisible(true);
-					optionspanel.setVisible(false);
-					add(test);					
+					add(test);
+					optionspanel.setVisible(false);					
 					pack();
 					MathTest.setHeader("Subtraction Practice");
 				}
@@ -298,8 +297,8 @@ public class MainGui extends JFrame
 				{
 					test = new MultTest(qty, min, max);				
 					test.setVisible(true);
+					add(test);
 					optionspanel.setVisible(false);
-					add(test);					
 					pack();
 					MathTest.setHeader("Multiplication Practice");
 				}
@@ -307,8 +306,8 @@ public class MainGui extends JFrame
 				{
 					test = new DivTest(qty, min, max);				
 					test.setVisible(true);
+					add(test);
 					optionspanel.setVisible(false);
-					add(test);					
 					pack();
 					MathTest.setHeader("Division Practice");
 				}

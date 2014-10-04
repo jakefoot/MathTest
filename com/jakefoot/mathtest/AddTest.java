@@ -145,7 +145,6 @@ public class AddTest extends JPanel
 		quant = qty;		
 		setProblem();
 		++counter;
-		probpane.requestFocus();
 		ansfield.requestFocus();
 		
 	}
