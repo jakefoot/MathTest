@@ -2,22 +2,19 @@ package com.jakefoot.mathtest;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class SubTest extends JFrame
+public class SubTest extends JPanel
 {
 	/**
 	 * 
@@ -33,7 +30,8 @@ public class SubTest extends JFrame
 	private JLabel msg;
 	private JLabel scorelabel;
 	
-	private JButton reset;	
+	private JButton resetbutton;
+	private JButton menubutton;
 	
 	private int numB;
 	private int numA;	
@@ -57,33 +55,24 @@ public class SubTest extends JFrame
 	
 	public SubTest(int qty, int min, int max)
 	{		
-		super(String.format("%d Problem Subtraction Test", qty));
-		setSize(475, 250);		
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
-		addWindowFocusListener(new WindowFocusHandler());
-		
-		
-		//define and add panes
-		Container contpanel = getContentPane();
-		contpanel.setLayout(new BoxLayout(contpanel, BoxLayout.PAGE_AXIS));
+		super();
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
 		JPanel probpane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		probpane.setBackground(Color.WHITE);
-		contpanel.add(probpane);
+		add(probpane);
 		
 		JPanel msgpane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		msgpane.setBackground(Color.WHITE);
-		contpanel.add(msgpane);
+		add(msgpane);
 		
 		JPanel scorepane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		scorepane.setBackground(Color.WHITE);
-		contpanel.add(scorepane);
+		add(scorepane);
 		
-		JPanel buttonpane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel buttonpane = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
 		buttonpane.setBackground(Color.WHITE);
-		contpanel.add(buttonpane);		
+		add(buttonpane);		
 		
 		//problem display
 		probnum = new JLabel();
@@ -123,7 +112,6 @@ public class SubTest extends JFrame
 		ansfield.setEditable(true);
 		ansfield.setHorizontalAlignment(JLabel.CENTER);
 		ansfield.setBackground(Color.WHITE);
-		ansfield.setBorder(null);
 		probpane.add(ansfield);
 		ansfield.addActionListener(new AnswerHandlerClass());
 		
@@ -139,18 +127,23 @@ public class SubTest extends JFrame
 		scorepane.add(scorelabel, BorderLayout.SOUTH);
 		
 		//define buttons
-		reset = new JButton("Try again");
-		reset.setFont(MainGui.radiofont);
-		reset.setEnabled(false);
-		buttonpane.add(reset);
-		reset.addActionListener(new ButtonHandlerClass());		
+		resetbutton = new JButton("Try again");
+		resetbutton.setFont(MainGui.radiofont);
+		resetbutton.setEnabled(false);
+		buttonpane.add(resetbutton);
+		resetbutton.addActionListener(new ButtonHandlerClass());
+		
+		menubutton = new JButton("Menu");
+		menubutton.setFont(MainGui.radiofont);
+		menubutton.addActionListener(new ButtonHandlerClass());
+		buttonpane.add(menubutton);
 		
 		//set variables initialize problem
 		randlow = min;
-		randhigh = max - min + 1;	
-		quant = qty;		
+		randhigh = max - min + 1;
+		quant = qty;
 		setProblem();
-		++counter;		
+		++counter;
 	}
 
 	private int getFactor ()
@@ -188,7 +181,7 @@ public class SubTest extends JFrame
 		{
 			++numright;
 			msg.setForeground(Color.GREEN);
-			msg.setText("Correct!  " + num1 + " - " + num2 + " = " + ans);				
+			msg.setText("Correct!  " + num1 + " - " + num2 + " = " + ans);
 		}
 		else
 		{
@@ -196,19 +189,6 @@ public class SubTest extends JFrame
 			msg.setText("Incorrect.  " + num1 + " - " + num2 + " = " + ans);
 		}
 	}	
-	
-	private class WindowFocusHandler implements WindowFocusListener
-	{
-
-		@Override
-		public void windowGainedFocus(WindowEvent event)
-		{
-			ansfield.requestFocusInWindow();
-		}
-
-		@Override
-		public void windowLostFocus(WindowEvent event) {}		
-	}
 	
 	private class AnswerHandlerClass implements ActionListener
 	{
@@ -251,7 +231,7 @@ public class SubTest extends JFrame
 					ansfield.setEnabled(false);
 					num1field.setText(null);
 					num2field.setText(null);
-					reset.setEnabled(true);
+					resetbutton.setEnabled(true);
 				}
 			}
 		}
@@ -262,9 +242,9 @@ public class SubTest extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			if (e.getSource() == reset)
+			if (e.getSource() == resetbutton)
 			{
-				reset.setEnabled(false);
+				resetbutton.setEnabled(false);
 				counter = 1;
 				numright = 0;
 				setProblem();
@@ -274,6 +254,16 @@ public class SubTest extends JFrame
 				msg.setText(null);
 				++counter;	
 				ansfield.requestFocusInWindow();			
+			}
+			
+			if (e.getSource() == menubutton)
+			{			    
+			    int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to return to the menu?\nAll progress will be lost", "Return To Menu", JOptionPane.YES_NO_OPTION);
+				
+				if(result == JOptionPane.YES_OPTION)
+				{
+				    MainGui.showOptions();				
+				}
 			}
 		}		
 	}

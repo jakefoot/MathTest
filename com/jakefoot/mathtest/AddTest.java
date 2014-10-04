@@ -2,22 +2,19 @@ package com.jakefoot.mathtest;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class AddTest extends JFrame
+public class AddTest extends JPanel
 {
 	/**
 	 * 
@@ -33,7 +30,8 @@ public class AddTest extends JFrame
 	private JLabel msg;
 	private JLabel scorelabel;
 	
-	private JButton reset;	
+	private JButton resetbutton;
+	private JButton menubutton;
 	
 	private int num;
 	private int num1;
@@ -55,33 +53,24 @@ public class AddTest extends JFrame
 	
 	public AddTest(int qty, int min, int max)
 	{		
-		super(String.format("%d Problem Addition Test", qty));
-		setSize(475, 250);		
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
-		addWindowFocusListener(new WindowFocusHandler());
-		
-		
-		//define and add panes
-		Container contpanel = getContentPane();
-		contpanel.setLayout(new BoxLayout(contpanel, BoxLayout.PAGE_AXIS));
+		super();
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
 		JPanel probpane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		probpane.setBackground(Color.WHITE);
-		contpanel.add(probpane);
+		add(probpane);
 		
 		JPanel msgpane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		msgpane.setBackground(Color.WHITE);
-		contpanel.add(msgpane);
+		add(msgpane);
 		
 		JPanel scorepane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		scorepane.setBackground(Color.WHITE);
-		contpanel.add(scorepane);
+		add(scorepane);
 		
-		JPanel buttonpane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel buttonpane = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
 		buttonpane.setBackground(Color.WHITE);
-		contpanel.add(buttonpane);		
+		add(buttonpane);		
 		
 		//problem display
 		probnum = new JLabel();
@@ -91,7 +80,8 @@ public class AddTest extends JFrame
 		num1field = new JTextField();
 		num1field.setFont(MainGui.radiofont);
 		num1field.setColumns(2);
-		num1field.setEditable(false);
+		num1field.setEnabled(false);
+		num1field.setDisabledTextColor(Color.BLACK);
 		num1field.setHorizontalAlignment(JLabel.CENTER);
 		num1field.setBackground(Color.WHITE);
 		num1field.setBorder(null);
@@ -105,7 +95,8 @@ public class AddTest extends JFrame
 		num2field = new JTextField();
 		num2field.setFont(MainGui.radiofont);
 		num2field.setColumns(2);
-		num2field.setEditable(false);
+		num2field.setEnabled(false);
+		num2field.setDisabledTextColor(Color.BLACK);
 		num2field.setHorizontalAlignment(JLabel.CENTER);
 		num2field.setBackground(Color.WHITE);
 		num2field.setBorder(null);
@@ -121,10 +112,8 @@ public class AddTest extends JFrame
 		ansfield.setEditable(true);
 		ansfield.setHorizontalAlignment(JLabel.CENTER);
 		ansfield.setBackground(Color.WHITE);
-		ansfield.setBorder(null);
 		probpane.add(ansfield);
-		ansfield.addActionListener(new AnswerHandlerClass());
-		
+		ansfield.addActionListener(new AnswerHandlerClass());		
 		
 		//correct/incorrect message display
 		msg = new JLabel();
@@ -137,18 +126,28 @@ public class AddTest extends JFrame
 		scorepane.add(scorelabel, BorderLayout.SOUTH);
 		
 		//define buttons
-		reset = new JButton("Try again");
-		reset.setFont(MainGui.radiofont);
-		reset.setEnabled(false);
-		buttonpane.add(reset);
-		reset.addActionListener(new ButtonHandlerClass());		
+		resetbutton = new JButton("Try again");
+		resetbutton.setFont(MainGui.radiofont);
+		resetbutton.setFocusable(false);
+		resetbutton.setEnabled(false);
+		buttonpane.add(resetbutton);
+		resetbutton.addActionListener(new ButtonHandlerClass());
+		
+		menubutton = new JButton("Menu");
+		menubutton.setFont(MainGui.radiofont);
+		menubutton.setFocusable(false);
+		menubutton.addActionListener(new ButtonHandlerClass());
+		buttonpane.add(menubutton);
 		
 		//set variables initialize problem
 		randlow = min;
 		randhigh = max - min + 1;	
 		quant = qty;		
 		setProblem();
-		++counter;		
+		++counter;
+		probpane.requestFocus();
+		ansfield.requestFocus();
+		
 	}
 
 	private int getFactor ()
@@ -184,19 +183,6 @@ public class AddTest extends JFrame
 			msg.setText("Incorrect.  " + num1 + " + " + num2 + " = " + ans);
 		}
 	}	
-	
-	private class WindowFocusHandler implements WindowFocusListener
-	{
-
-		@Override
-		public void windowGainedFocus(WindowEvent event)
-		{
-			ansfield.requestFocusInWindow();
-		}
-
-		@Override
-		public void windowLostFocus(WindowEvent event) {}		
-	}
 	
 	private class AnswerHandlerClass implements ActionListener
 	{
@@ -239,7 +225,7 @@ public class AddTest extends JFrame
 					ansfield.setEnabled(false);
 					num1field.setText(null);
 					num2field.setText(null);
-					reset.setEnabled(true);
+					resetbutton.setEnabled(true);
 				}
 			}
 		}
@@ -250,9 +236,9 @@ public class AddTest extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			if (e.getSource() == reset)
+			if (e.getSource() == resetbutton)
 			{
-				reset.setEnabled(false);
+				resetbutton.setEnabled(false);
 				counter = 1;
 				numright = 0;
 				setProblem();
@@ -262,6 +248,16 @@ public class AddTest extends JFrame
 				msg.setText(null);
 				++counter;	
 				ansfield.requestFocusInWindow();			
+			}
+			
+			if (e.getSource() == menubutton)
+			{			    
+			    int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to return to the menu?\nAll progress will be lost", "Return To Menu", JOptionPane.YES_NO_OPTION);
+				
+				if(result == JOptionPane.YES_OPTION)
+				{
+				    MainGui.showOptions();				
+				}
 			}
 		}		
 	}

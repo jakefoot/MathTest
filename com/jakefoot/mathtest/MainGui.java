@@ -1,8 +1,10 @@
 package com.jakefoot.mathtest;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.Container;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -15,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
@@ -25,18 +28,21 @@ public class MainGui extends JFrame
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static JRadioButton addradio;
+	private static JPanel optionspanel;
+	private static JRadioButton addradio;
 	private static JRadioButton subradio;
 	private static JRadioButton multradio;
 	private static JRadioButton divradio;
 	private ButtonGroup group;
 	static Font radiofont = new Font (Font.SANS_SERIF, Font.PLAIN, 20);
 	
-	private JButton start;
+	private JButton startbutton;
 	
 	private JTextField qtyfield;
 	private static JTextField minfield;
 	private static JTextField maxfield;
+	private static Container test;
+	private static Container contpanel;
 	
 	private JLabel qtylabel;
 	private JLabel minlabel;
@@ -49,33 +55,47 @@ public class MainGui extends JFrame
 	
 	private int qty;
 	private int min;
-	private int max;
-	
-	
-	
+	private int max;	
 	
 	public MainGui()
 	{
-		super ("Math Test");
-		setSize(475, 250);
+		super ("Math Practice Options");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new FlowLayout());
-		setResizable(false);
 		
-		//create and add radio buttons to frame
+		contpanel = getContentPane();
+		
+		optionspanel = new JPanel(new GridBagLayout());
+		GridBagConstraints GBCar = new GridBagConstraints();
 		addradio = new JRadioButton("Addition", true);
-		addradio.setFont(radiofont);		
+		addradio.setFont(radiofont);
+		GBCar.fill = GridBagConstraints.HORIZONTAL;
+		GBCar.gridx = 0;
+		GBCar.gridy = 0;
+		optionspanel.add(addradio, GBCar);
+		
+		GridBagConstraints GBCsr = new GridBagConstraints();
 		subradio = new JRadioButton("Subtraction", false);
 		subradio.setFont(radiofont);
+		GBCsr.fill = GridBagConstraints.HORIZONTAL;
+		GBCsr.gridx = 1;
+		GBCsr.gridy = 0;
+		optionspanel.add(subradio, GBCsr);
+		
+		GridBagConstraints GBCmr = new GridBagConstraints();
 		multradio = new JRadioButton("Multiplication", false);
 		multradio.setFont(radiofont);
+		GBCmr.fill = GridBagConstraints.HORIZONTAL;
+		GBCmr.gridx = 2;
+		GBCmr.gridy = 0;
+		optionspanel.add(multradio, GBCmr);
+		
+		GridBagConstraints GBCdr = new GridBagConstraints();
 		divradio = new JRadioButton("Division", false);
 		divradio.setFont(radiofont);
-		
-		add(addradio);
-		add(subradio);
-		add(multradio);
-		add(divradio);
+		GBCdr.fill = GridBagConstraints.HORIZONTAL;
+		GBCdr.gridx = 3;
+		GBCdr.gridy = 0;
+		optionspanel.add(divradio, GBCdr);		
 		
 		group = new ButtonGroup();
 		group.add(addradio);
@@ -83,52 +103,98 @@ public class MainGui extends JFrame
 		group.add(multradio);
 		group.add(divradio);
 		
-		
-		//create and add input fields to frame
+		GridBagConstraints GBCql = new GridBagConstraints();
 		qtylabel = new JLabel();
-		qtylabel.setText("Number of problems            ");
+		qtylabel.setText("Number of problems");
 		qtylabel.setFont(radiofont);
-		add(qtylabel);
+		GBCql.anchor = GridBagConstraints.WEST;
+		GBCql.gridwidth = 2;
+		GBCql.gridx = 0;
+		GBCql.gridy = 1;
+		optionspanel.add(qtylabel, GBCql);
+		
+		GridBagConstraints GBCqf = new GridBagConstraints();
 		qtyfield = new JTextField("10");
-		qtyfield.setColumns(5);
+		qtyfield.setColumns(3);
 		qtyfield.setFont(radiofont);
-		add(qtyfield);
 		qtyfield.addFocusListener(new FieldHandlerClass());
+		GBCqf.anchor = GridBagConstraints.WEST;
+		GBCqf.gridx = 2;
+		GBCqf.gridy = 1;
+		optionspanel.add(qtyfield, GBCqf);
 		
+		GridBagConstraints GBCmnl = new GridBagConstraints();
 		minlabel = new JLabel();
-		minlabel.setText("Minimum                             ");
+		minlabel.setText("Minimum");
 		minlabel.setFont(radiofont);
-		add(minlabel);		
-		minfield = new JTextField("1");
-		minfield.setColumns(5);
+		GBCmnl.anchor = GridBagConstraints.WEST;
+		GBCmnl.gridwidth = 2;
+		GBCmnl.gridx = 0;
+		GBCmnl.gridy = 2;
+		optionspanel.add(minlabel, GBCmnl);
+		
+		GridBagConstraints GBCmnf = new GridBagConstraints();
+		minfield = new JTextField("10");
+		minfield.setColumns(3);
 		minfield.setFont(radiofont);
-		add(minfield);
 		minfield.addFocusListener(new FieldHandlerClass());
+		GBCmnf.anchor = GridBagConstraints.WEST;
+		GBCmnf.gridx = 2;
+		GBCmnf.gridy = 2;
+		optionspanel.add(minfield, GBCmnf);
 		
+		GridBagConstraints GBCmxl = new GridBagConstraints();
 		maxlabel = new JLabel();
-		maxlabel.setText("Maximum                            ");
+		maxlabel.setText("Maximum");
 		maxlabel.setFont(radiofont);
-		add(maxlabel);		
-		maxfield = new JTextField("12");
-		maxfield.setColumns(5);
-		maxfield.setFont(radiofont);
-		add(maxfield);
-		maxfield.addFocusListener(new FieldHandlerClass());
+		GBCmxl.anchor = GridBagConstraints.WEST;
+		GBCmxl.gridwidth = 2;
+		GBCmxl.gridx = 0;
+		GBCmxl.gridy = 3;
+		optionspanel.add(maxlabel, GBCmxl);
 		
-		//create and add start button to frame
-		start = new JButton("Start Test");
-		start.setFont(radiofont);
-		start.setSize(150, 20);
-		add(start);
+		GridBagConstraints GBCmxf = new GridBagConstraints();
+		maxfield = new JTextField("20");
+		maxfield.setColumns(3);
+		maxfield.setFont(radiofont);
+		maxfield.addFocusListener(new FieldHandlerClass());
+		GBCmxf.anchor = GridBagConstraints.WEST;
+		GBCmxf.gridx = 2;
+		GBCmxf.gridy = 3;
+		optionspanel.add(maxfield, GBCmxf);
+		
+		GridBagConstraints GBCsb = new GridBagConstraints();
+		startbutton = new JButton("Start");
+		startbutton.setFont(radiofont);
+		startbutton.addActionListener(new ButtonHandlerClass());
+		GBCsb.anchor = GridBagConstraints.PAGE_END;
+		//GBCsb.gridwidth = 2;
+		GBCsb.gridx = 3;
+		GBCsb.gridy = 4;
+		optionspanel.add(startbutton, GBCsb);
+		
+		
+		contpanel.add(optionspanel);
+		pack();
+		setMinimumSize(this.getSize());
 		
 		//adjust max and min to fit radio selection
-		//addradio.addItemListener(new RadioHandlerClass ());
-		//subradio.addItemListener(new RadioHandlerClass ());
-		//multradio.addItemListener(new RadioHandlerClass ());
-		//divradio.addItemListener(new RadioHandlerClass ());
+		addradio.addItemListener(new RadioHandlerClass ());
+		subradio.addItemListener(new RadioHandlerClass ());
+		multradio.addItemListener(new RadioHandlerClass ());
+		divradio.addItemListener(new RadioHandlerClass ());
 		
-		start.addActionListener(new ButtonHandlerClass());
+		
 	}
+	
+	public static void showOptions()
+	{
+	    test.setVisible(false);
+	    contpanel.remove(test);
+	    test = null;
+	    optionspanel.setVisible(true);
+	    MathTest.setHeader("Math Practice Options");
+	}	
 	
 	public static class RadioHandlerClass implements ItemListener
 	{			
@@ -212,23 +278,39 @@ public class MainGui extends JFrame
 			{	
 				if (addradio.isSelected())
 				{
-					AddTest addtest = new AddTest(qty, min, max);
-					addtest.setVisible(true);
+					test = new AddTest(qty, min, max);
+					test.setVisible(true);
+					optionspanel.setVisible(false);
+					add(test);					
+					pack();
+					MathTest.setHeader("Addition Practice");
 				}
 				else if (subradio.isSelected())
 				{
-					SubTest subtest = new SubTest(qty, min, max);				
-					subtest.setVisible(true);
+					test = new SubTest(qty, min, max);				
+					test.setVisible(true);
+					optionspanel.setVisible(false);
+					add(test);					
+					pack();
+					MathTest.setHeader("Subtraction Practice");
 				}
 				else if (multradio.isSelected())
 				{
-					MultTest multtest = new MultTest(qty, min, max);				
-					multtest.setVisible(true);
+					test = new MultTest(qty, min, max);				
+					test.setVisible(true);
+					optionspanel.setVisible(false);
+					add(test);					
+					pack();
+					MathTest.setHeader("Multiplication Practice");
 				}
 				else if (divradio.isSelected())
 				{
-					DivTest divtest = new DivTest(qty, min, max);				
-					divtest.setVisible(true);
+					test = new DivTest(qty, min, max);				
+					test.setVisible(true);
+					optionspanel.setVisible(false);
+					add(test);					
+					pack();
+					MathTest.setHeader("Division Practice");
 				}
 			}
 		}
@@ -241,11 +323,10 @@ public class MainGui extends JFrame
 		public void focusGained(FocusEvent e)
 		{
 			((JTextComponent) e.getComponent()).selectAll();
-			((JTextComponent) e.getComponent()).setForeground(Color.BLACK);
-			
+			((JTextComponent) e.getComponent()).setForeground(Color.BLACK);			
 		}
 
 		@Override
 		public void focusLost(FocusEvent e){}		
-	}
+	}	
 }
