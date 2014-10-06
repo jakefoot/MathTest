@@ -15,4 +15,9 @@ public class MathTest
 	{
 	    gui.setTitle(s);
 	}
+	
+	public static void packWindow()
+	{
+	    gui.pack();
+	}
 }

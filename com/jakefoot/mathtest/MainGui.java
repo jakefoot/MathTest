@@ -42,7 +42,7 @@ public class MainGui extends JFrame
 	private static JTextField minfield;
 	private static JTextField maxfield;
 	private static Container test;
-	private static Container contpanel;
+	public static Container contpanel;
 	
 	private JLabel qtylabel;
 	private JLabel minlabel;
@@ -55,7 +55,8 @@ public class MainGui extends JFrame
 	
 	private int qty;
 	private int min;
-	private int max;	
+	private int max;
+	private char operator;
 	
 	public MainGui()
 	{
@@ -134,7 +135,7 @@ public class MainGui extends JFrame
 		optionspanel.add(minlabel, GBCmnl);
 		
 		GridBagConstraints GBCmnf = new GridBagConstraints();
-		minfield = new JTextField("10");
+		minfield = new JTextField("1");
 		minfield.setColumns(3);
 		minfield.setFont(radiofont);
 		minfield.addFocusListener(new FieldHandlerClass());
@@ -154,7 +155,7 @@ public class MainGui extends JFrame
 		optionspanel.add(maxlabel, GBCmxl);
 		
 		GridBagConstraints GBCmxf = new GridBagConstraints();
-		maxfield = new JTextField("20");
+		maxfield = new JTextField("50");
 		maxfield.setColumns(3);
 		maxfield.setFont(radiofont);
 		maxfield.addFocusListener(new FieldHandlerClass());
@@ -193,6 +194,7 @@ public class MainGui extends JFrame
 	    test = null;
 	    optionspanel.setVisible(true);
 	    MathTest.setHeader("Math Practice Options");
+	    MathTest.packWindow();
 	}	
 	
 	public static class RadioHandlerClass implements ItemListener
@@ -202,8 +204,8 @@ public class MainGui extends JFrame
 		{		
 			if (addradio.isSelected() || subradio.isSelected())
 			{
-				minfield.setText("10");
-				maxfield.setText("20");
+				minfield.setText("1");
+				maxfield.setText("50");
 			}
 			else
 			{
@@ -218,7 +220,7 @@ public class MainGui extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent event)
 		{
-			try
+		    	try
 			{
 				qty = Integer.valueOf(qtyfield.getText());
 			}
@@ -277,40 +279,30 @@ public class MainGui extends JFrame
 			{	
 				if (addradio.isSelected())
 				{
-					test = new AddTest(qty, min, max);
-					test.setVisible(true);
-					add(test);
-					optionspanel.setVisible(false);					
-					pack();
-					MathTest.setHeader("Addition Practice");
+				    operator = '+';
+				    MathTest.setHeader("Addition Practice");
 				}
 				else if (subradio.isSelected())
 				{
-					test = new SubTest(qty, min, max);				
-					test.setVisible(true);
-					add(test);
-					optionspanel.setVisible(false);					
-					pack();
-					MathTest.setHeader("Subtraction Practice");
+				    operator = '-';
+				    MathTest.setHeader("Subtraction Practice");
 				}
 				else if (multradio.isSelected())
 				{
-					test = new MultTest(qty, min, max);				
-					test.setVisible(true);
-					add(test);
-					optionspanel.setVisible(false);
-					pack();
-					MathTest.setHeader("Multiplication Practice");
+				    operator = 'X';
+				    MathTest.setHeader("Multiplication Practice");
 				}
 				else if (divradio.isSelected())
 				{
-					test = new DivTest(qty, min, max);				
-					test.setVisible(true);
-					add(test);
-					optionspanel.setVisible(false);
-					pack();
-					MathTest.setHeader("Division Practice");
+				    operator = '/';
+				    MathTest.setHeader("Division Practice");
 				}
+				test = new PracticePane(qty, min, max, operator);
+				test.setVisible(true);
+				add(test);
+				optionspanel.setVisible(false);					
+				pack();
+				
 			}
 		}
 	}
